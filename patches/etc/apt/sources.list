@@ -1,0 +1,17 @@
+# Default mirror, pre-selected by the Zdroid bootstrap build.
+#
+# Without an explicit entry here, the upstream `pkg` script in
+# `termux-tools` treats sources.list as "unselected" on first
+# `apt update` / `pkg install`, kicks off its auto-probe over a
+# rotating candidate list, and writes whichever mirror responded
+# fastest to a curl `HEAD`. That probe is a false-positive on
+# mirrors with bot-protection CDNs (e.g. mirror.textcord.xyz),
+# which return HTTP 200 on the bot-check page but serve HTML
+# instead of clearsigned PGP for InRelease, so apt then fails
+# with `Clearsigned file isn't valid, got 'NOSPLIT'`.
+#
+# Hard-coding packages.termux.dev (the official Termux mirror)
+# keeps `pkg` from auto-probing, gives users a deterministic
+# starting point, and lets them switch via `termux-change-repo`
+# if they want a different CDN.
+deb https://packages.termux.dev/apt/termux-main stable main
